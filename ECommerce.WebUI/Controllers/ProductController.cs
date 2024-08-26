@@ -15,21 +15,30 @@ namespace ECommerce.WebUI.Controllers
         }
 
         // GET: ProductController
-        public async Task<ActionResult> Index(int page = 1, int category = 0)
+        public async Task<ActionResult> Index(int page = 1, int category = 0,int sort = 0)
         {
-            var items=await _productService.GetAllByCategoryAsync(category);
+            var items = await _productService.GetAllByCategoryAsync(category);
             int pageSize = 10;
 
             var model = new ProductListViewModel
             {
-                Products=items.Skip((page-1)*pageSize).Take(pageSize).ToList(),
-                PageSize=pageSize,
-                CurrentCategory=category,
-                CurrentPage=page,
-                PageCount=(int)Math.Ceiling(items.Count/(double)pageSize)
+                Products = sort == 0 ? items.Skip((page - 1) * pageSize).Take(pageSize).ToList()
+                : sort == 1 ? items.Skip((page - 1) * pageSize).Take(pageSize).OrderBy(pr => pr.ProductName).ToList()
+                : sort == 2 ? items.Skip((page - 1) * pageSize).Take(pageSize).OrderBy(pr => pr.UnitPrice).ToList()
+                : []
+                ,
+                PageSize = pageSize,
+                CurrentCategory = category,
+                CurrentPage = page,
+                PageCount = (int)Math.Ceiling(items.Count / (double)pageSize),
+                Sort = sort
+
             };
-            return View(model);
+            return View("Index", model);
         }
+
+
+    
 
         // GET: ProductController/Details/5
         public ActionResult Details(int id)

@@ -15,6 +15,11 @@ namespace ECommerce.WebUI.TagHelpers
         [HtmlAttributeName("current-page")]
         public int CurrentPage { get; set; }
 
+        [HtmlAttributeName("current-sort")]
+        public int CurrentSort { get; set; }
+        [HtmlAttributeName("admin-check")]
+        public bool AdminCheck { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             output.TagName = "section";
@@ -24,6 +29,15 @@ namespace ECommerce.WebUI.TagHelpers
             {
                 sb.Append("<ul class='pagination'>");
 
+                if (CurrentPage > 1)
+                {
+                    sb.AppendFormat("<li class='{0}'>",  "page-item");
+                    sb.AppendFormat("<a  class='page-link' href='/product/index?page={0}&category={1}'> prev </a>",
+                       CurrentPage-1,CurrentCategory,CurrentSort);
+                    sb.Append("</li>");
+
+                }
+
                 for (int i = 1; i <=PageCount; i++)
                 {
                     sb.AppendFormat("<li class='{0}'>", (i == CurrentPage) ? "page-item active" : "page-item");
@@ -31,6 +45,15 @@ namespace ECommerce.WebUI.TagHelpers
                         i, CurrentCategory, i);
                     sb.Append("</li>");
                 }
+                if (CurrentPage != PageCount)
+                {
+                    sb.AppendFormat("<li class='{0}'>", "page-item");
+                    sb.AppendFormat("<a  class='page-link' href='/product/index?page={0}&category={1}'> next </a>",
+                       CurrentPage + 1, CurrentCategory, CurrentSort);
+                    sb.Append("</li>");
+
+                }
+
 
                 sb.Append("</ul>");
             }
