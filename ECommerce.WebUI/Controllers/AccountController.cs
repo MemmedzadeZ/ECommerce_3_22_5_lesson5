@@ -95,7 +95,8 @@ namespace ECommerce.WebUI.Controllers
                             return View(model);
                         }
                     }
-                    await _userManager.AddToRoleAsync(user, "Editor");
+                  //  await _userManager.AddToRoleAsync(user, "Editor");
+                    await _userManager.AddToRolesAsync(user, new List<string> { "Admin", "Editor" });
                     return RedirectToAction("Login", "Account");
                 }
             }
