@@ -11,7 +11,7 @@ namespace ECommerce.WebUI.Controllers
         {
             return View();
         }
-        [Authorize(Roles = "Editor")]
+        [Authorize(Roles = "Editor,Admin")]
         public IActionResult Index2()
         {
             return View();
